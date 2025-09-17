@@ -79,7 +79,7 @@ def test_index_page():
     assert r.status_code == 200, "/index.html недоступен"
     assert "<html" in r.text.lower(), "Содержимое /index.html некорректное"
     
-    msg = f"Index доступен по http://localhost:8080/index"
+    msg = f"Index доступен по http://localhost:8080/index.html"
 
     # Логирование для pytest-html
     logger.info(msg)
