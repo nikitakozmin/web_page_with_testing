@@ -1,0 +1,44 @@
+version: '3.8'
+
+secrets:
+  target_password:
+    file: ./target_password.txt
+
+services:
+  target:
+    build:
+      context: ./target
+      secrets:
+        - target_password
+      args:
+        TARGET_USER: webtester
+    environment:
+      TARGET_USER: webtester
+    ports:
+      - "8080:80"
+      - "2222:22"
+    networks:
+      - test-network
+
+  agent:
+    build: 
+      context: ./agent
+    volumes:
+      - ./reports:/app/reports
+    depends_on:
+      - target
+    environment:
+      TARGET_HOST: target
+      TARGET_PORT: 80
+      TARGET_USER: webtester
+      TARGET_PASSWORD_FILE: /run/secrets/target_password
+      CHECK_MINUTES: 5
+    secrets:
+      - target_password
+    networks:
+      - test-network
+    tty: true
+
+networks:
+  test-network:
+    driver: bridge
