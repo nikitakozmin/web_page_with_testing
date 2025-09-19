@@ -30,8 +30,8 @@ RUN chown -R root:$TARGET_USER /usr/local/apache2/logs \
     && chmod -R 1777 /tmp
 
 # Настройка ServerName
-RUN echo "ServerName localhost:8080" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "ServerName localhost:80" >> /usr/local/apache2/conf/httpd.conf
 
 EXPOSE 22 80
 
-CMD /usr/sbin/sshd -D -e & httpd-foreground
+CMD echo "Index доступен по http://localhost:80/index.html" && /usr/sbin/sshd -D -e & httpd-foreground
